@@ -1,0 +1,91 @@
+﻿services:
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: smk_frontend
+
+    ports:
+      - "8080:80"
+      - "8443:443"
+
+    depends_on:
+      - backend
+
+    networks:
+      - public_net
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: smk_backend
+
+    env_file:
+      - .env.docker
+
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/smk_administrasi"
+
+    expose:
+      - "4000"
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    volumes:
+      - ./backend/uploads:/app/uploads
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    networks:
+      - public_net
+      - private_net
+
+
+  postgres:
+    image: postgres:17-alpine
+
+    container_name: smk_postgres
+
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: smk_administrasi
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres -d smk_administrasi
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+    restart: unless-stopped
+
+    networks:
+      - private_net
+
+
+networks:
+
+  public_net:
+    driver: bridge
+
+  private_net:
+    driver: bridge
+    internal: true
+
+
+volumes:
+
+  postgres_data:

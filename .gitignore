@@ -1,0 +1,81 @@
+﻿# =========================================================
+# ENVIRONMENT / SECRETS
+# =========================================================
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# =========================================================
+# PRIVATE KEYS / LOCAL CERTIFICATES
+# =========================================================
+*.key
+frontend/certs/
+
+# =========================================================
+# DATABASE / BACKUP
+# =========================================================
+backup/
+postgres-data/
+*.backup
+*.dump
+
+# =========================================================
+# USER UPLOADS
+# =========================================================
+backend/uploads/
+
+# =========================================================
+# NODE
+# =========================================================
+**/node_modules/
+**/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================================================
+# LOGIN / COOKIE / TEST CREDENTIAL FILES
+# =========================================================
+backend/cookies.txt
+backend/*cookies*.txt
+backend/*cookie*.txt
+backend/login.json
+backend/login-test.json
+backend/*login*.json
+backend/test-login*.json
+backend/test-student*.json
+backend/invalid-student.json
+
+# =========================================================
+# TEMP / BACKUP FILES
+# =========================================================
+*.bak
+*.tmp
+*.log
+
+# =========================================================
+# OS / EDITOR
+# =========================================================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Root/local cookie files
+cookies.txt
+*cookies*.txt
+*cookie*.txt
+
+# AI / editor generated files
+backend/.agents/
+backend/.claude/
+backend/.windsurf/
+
+# Accidental duplicate Dockerfiles
+**/Dockerfile.txt
+
+# Frontend backup source files
+frontend/src/pages/*.backup.tsx

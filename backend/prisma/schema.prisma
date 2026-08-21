@@ -1,0 +1,360 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  SISWA
+  GURU
+  STAF_TU
+  KEPALA_SEKOLAH
+  MITRA_INDUSTRI
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum Gender {
+  LAKI_LAKI
+  PEREMPUAN
+}
+
+enum GradeStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+}
+
+enum GraduationStatus {
+  PENDING
+  PASSED
+  FAILED
+}
+
+enum DocumentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  VALID
+  INVALID
+}
+
+enum DocumentType {
+  DIPLOMA
+  PKL_CERTIFICATE
+  INTERNSHIP_CERTIFICATE
+}
+
+enum VerificationStatus {
+  VALID
+  INVALID
+  FALSIFIED
+}
+
+enum AuditStatus {
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id           String     @id @default(uuid()) @db.Uuid
+  username     String     @unique @db.VarChar(50)
+  email        String     @unique @db.VarChar(150)
+  passwordHash String     @map("password_hash")
+  role         UserRole
+  status       UserStatus @default(ACTIVE)
+
+  lastLoginAt DateTime? @map("last_login_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  student   Student?
+  teacher   Teacher?
+  auditLogs AuditLog[]
+
+  @@index([role])
+  @@index([status])
+  @@map("users")
+}
+
+model Student {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String?   @unique @map("user_id") @db.Uuid
+  studentNumber  String    @unique @map("student_number") @db.VarChar(30)
+  fullName       String    @map("full_name") @db.VarChar(150)
+  gender         Gender?
+  birthPlace     String?   @map("birth_place") @db.VarChar(100)
+  birthDate      DateTime? @map("birth_date")
+  address        String?   @db.Text
+  phone          String?   @db.VarChar(30)
+  graduationYear Int?      @map("graduation_year")
+
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  classMembers ClassMember[]
+  grades       Grade[]
+  transcript   Transcript?
+  graduation   Graduation?
+  diplomas     Diploma[]
+  certificates Certificate[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([fullName])
+  @@index([graduationYear])
+  @@map("students")
+}
+
+model Teacher {
+  id             String  @id @default(uuid()) @db.Uuid
+  userId         String? @unique @map("user_id") @db.Uuid
+  employeeNumber String  @unique @map("employee_number") @db.VarChar(30)
+  fullName       String  @map("full_name") @db.VarChar(150)
+  phone          String? @db.VarChar(30)
+  address        String? @db.Text
+
+  user     User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  grades   Grade[]
+  subjects TeacherSubject[]
+  classes  Class[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([fullName])
+  @@map("teachers")
+}
+
+model Subject {
+  id          String  @id @default(uuid()) @db.Uuid
+  code        String  @unique @db.VarChar(20)
+  name        String  @db.VarChar(150)
+  description String? @db.Text
+  credits     Int     @default(1)
+
+  grades   Grade[]
+  teachers TeacherSubject[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([name])
+  @@map("subjects")
+}
+
+model Class {
+  id           String  @id @default(uuid()) @db.Uuid
+  name         String  @db.VarChar(100)
+  major        String  @db.VarChar(100)
+  academicYear String  @map("academic_year") @db.VarChar(20)
+  teacherId    String? @map("teacher_id") @db.Uuid
+
+  teacher Teacher?      @relation(fields: [teacherId], references: [id], onDelete: SetNull)
+  members ClassMember[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([major])
+  @@index([academicYear])
+  @@index([teacherId])
+  @@map("classes")
+}
+
+model ClassMember {
+  id        String @id @default(uuid()) @db.Uuid
+  classId   String @map("class_id") @db.Uuid
+  studentId String @map("student_id") @db.Uuid
+
+  class   Class   @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([classId, studentId])
+  @@index([studentId])
+  @@map("class_members")
+}
+
+model TeacherSubject {
+  id        String @id @default(uuid()) @db.Uuid
+  teacherId String @map("teacher_id") @db.Uuid
+  subjectId String @map("subject_id") @db.Uuid
+
+  teacher Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([teacherId, subjectId])
+  @@index([subjectId])
+  @@map("teacher_subjects")
+}
+
+model Grade {
+  id        String @id @default(uuid()) @db.Uuid
+  studentId String @map("student_id") @db.Uuid
+  subjectId String @map("subject_id") @db.Uuid
+  teacherId String @map("teacher_id") @db.Uuid
+
+  academicYear String   @map("academic_year") @db.VarChar(20)
+  semester     Int
+  assignment   Decimal? @db.Decimal(5, 2)
+  midterm      Decimal? @db.Decimal(5, 2)
+  finalExam    Decimal? @map("final_exam") @db.Decimal(5, 2)
+  finalScore   Decimal? @map("final_score") @db.Decimal(5, 2)
+
+  status GradeStatus @default(DRAFT)
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Restrict)
+  teacher Teacher @relation(fields: [teacherId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, subjectId, academicYear, semester])
+  @@index([studentId])
+  @@index([subjectId])
+  @@index([teacherId])
+  @@index([academicYear, semester])
+  @@map("grades")
+}
+
+model Transcript {
+  id             String    @id @default(uuid()) @db.Uuid
+  studentId      String    @unique @map("student_id") @db.Uuid
+  transcriptCode String    @unique @map("transcript_code") @db.VarChar(100)
+  totalCredits   Int       @default(0) @map("total_credits")
+  averageScore   Decimal?  @map("average_score") @db.Decimal(5, 2)
+  issuedAt       DateTime? @map("issued_at")
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("transcripts")
+}
+
+model Graduation {
+  id             String           @id @default(uuid()) @db.Uuid
+  studentId      String           @unique @map("student_id") @db.Uuid
+  graduationYear Int              @map("graduation_year")
+  status         GraduationStatus @default(PENDING)
+  finalAverage   Decimal?         @map("final_average") @db.Decimal(5, 2)
+  decisionDate   DateTime?        @map("decision_date")
+  notes          String?          @db.Text
+
+  student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([graduationYear])
+  @@index([status])
+  @@map("graduations")
+}
+
+model Diploma {
+  id               String         @id @default(uuid()) @db.Uuid
+  studentId        String         @map("student_id") @db.Uuid
+  documentNumber   String         @unique @map("document_number") @db.VarChar(100)
+  verificationCode String         @unique @map("verification_code") @db.VarChar(100)
+  documentName     String         @map("document_name") @db.VarChar(255)
+  filePath         String         @map("file_path") @db.VarChar(500)
+  fileHash         String         @unique @map("file_hash") @db.Char(64)
+  fileSize         Int            @map("file_size")
+  mimeType         String         @map("mime_type") @db.VarChar(100)
+  status           DocumentStatus @default(PENDING)
+  issuedAt         DateTime?      @map("issued_at")
+
+  student       Student              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  verifications VerificationRecord[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([studentId])
+  @@index([verificationCode])
+  @@index([status])
+  @@map("diplomas")
+}
+
+model Certificate {
+  id               String         @id @default(uuid()) @db.Uuid
+  studentId        String         @map("student_id") @db.Uuid
+  documentNumber   String         @unique @map("document_number") @db.VarChar(100)
+  verificationCode String         @unique @map("verification_code") @db.VarChar(100)
+  documentName     String         @map("document_name") @db.VarChar(255)
+  documentType     DocumentType
+  filePath         String         @map("file_path") @db.VarChar(500)
+  fileHash         String         @unique @map("file_hash") @db.Char(64)
+  fileSize         Int            @map("file_size")
+  mimeType         String         @map("mime_type") @db.VarChar(100)
+  institutionName  String?        @map("institution_name") @db.VarChar(200)
+  startDate        DateTime?      @map("start_date")
+  endDate          DateTime?      @map("end_date")
+  status           DocumentStatus @default(PENDING)
+  issuedAt         DateTime?      @map("issued_at")
+
+  student       Student              @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  verifications VerificationRecord[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([studentId])
+  @@index([verificationCode])
+  @@index([status])
+  @@map("certificates")
+}
+
+model VerificationRecord {
+  id               String             @id @default(uuid()) @db.Uuid
+  verificationCode String             @map("verification_code") @db.VarChar(100)
+  diplomaId        String?            @map("diploma_id") @db.Uuid
+  certificateId    String?            @map("certificate_id") @db.Uuid
+  submittedHash    String?            @map("submitted_hash") @db.Char(64)
+  storedHash       String?            @map("stored_hash") @db.Char(64)
+  status           VerificationStatus
+  verifiedAt       DateTime           @default(now()) @map("verified_at")
+  ipAddress        String?            @map("ip_address") @db.VarChar(45)
+  userAgent        String?            @map("user_agent") @db.VarChar(500)
+
+  diploma     Diploma?     @relation(fields: [diplomaId], references: [id], onDelete: SetNull)
+  certificate Certificate? @relation(fields: [certificateId], references: [id], onDelete: SetNull)
+
+  @@index([verificationCode])
+  @@index([status])
+  @@index([verifiedAt])
+  @@map("verification_records")
+}
+
+model AuditLog {
+  id         String      @id @default(uuid()) @db.Uuid
+  userId     String?     @map("user_id") @db.Uuid
+  role       UserRole?
+  action     String      @db.VarChar(100)
+  resource   String      @db.VarChar(100)
+  resourceId String?     @map("resource_id") @db.VarChar(100)
+  ipAddress  String?     @map("ip_address") @db.VarChar(45)
+  status     AuditStatus
+  metadata   Json?
+  createdAt  DateTime    @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([role])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  @@map("audit_logs")
+}

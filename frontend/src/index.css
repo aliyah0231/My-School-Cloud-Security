@@ -1,0 +1,1922 @@
+:root {
+  --text: #6b6375;
+  --text-h: #08060d;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --code-bg: #f4f3ec;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  --accent-border: rgba(170, 59, 255, 0.5);
+  --social-bg: rgba(244, 243, 236, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color-scheme: light dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #9ca3af;
+    --text-h: #f3f4f6;
+    --bg: #16171d;
+    --border: #2e303a;
+    --code-bg: #1f2028;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+    --accent-border: rgba(192, 132, 252, 0.5);
+    --social-bg: rgba(47, 48, 58, 0.5);
+    --shadow:
+      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+  }
+
+  #social .button-icon {
+    filter: invert(1) brightness(2);
+  }
+}
+
+#root {
+  width: 1126px;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--heading);
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
+  @media (max-width: 1024px) {
+    font-size: 36px;
+    margin: 20px 0;
+  }
+}
+h2 {
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
+  @media (max-width: 1024px) {
+    font-size: 20px;
+  }
+}
+p {
+  margin: 0;
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+/* =========================================================
+   IJAZAH PAGE - MODERN DASHBOARD
+   Tempel PALING BAWAH di App.css
+   ========================================================= */
+
+/* Supaya override ini hanya fokus ke halaman akademik ijazah */
+.academic-page {
+  width: 100%;
+}
+
+/* HEADER */
+.academic-page .academic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.academic-page .academic-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.academic-page .academic-icon {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #eaf1ff;
+  color: #2563eb;
+}
+
+.academic-page .module-eyebrow {
+  margin: 0 0 5px;
+
+  color: #4f6da6;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.academic-page .academic-title h2 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 27px;
+  line-height: 1.15;
+  font-weight: 800;
+
+  letter-spacing: -0.45px;
+}
+
+.academic-page .academic-title p {
+  margin: 6px 0 0;
+
+  color: #71809a;
+
+  font-size: 13px;
+}
+
+/* BUTTON HEADER */
+.academic-page .academic-header > div:last-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.academic-page .primary-button,
+.academic-page .secondary-button {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.academic-page .primary-button {
+  border: 1px solid #2563eb;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  box-shadow: 0 5px 12px rgba(37, 99, 235, 0.18);
+}
+
+.academic-page .primary-button:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.academic-page .secondary-button {
+  border: 1px solid #dbe3ee;
+
+  background: #ffffff;
+  color: #334155;
+}
+
+.academic-page .secondary-button:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* =========================================================
+   PANEL UPLOAD IJAZAH
+   ========================================================= */
+
+.academic-page > .academic-panel:first-of-type {
+  margin-bottom: 18px;
+
+  overflow: hidden;
+
+  border: 1px solid #dde5ef;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+/* Header Upload */
+.academic-page > .academic-panel:first-of-type
+  .academic-toolbar {
+  min-height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+
+  padding: 15px 20px;
+
+  border-bottom: 1px solid #e8edf4;
+}
+
+.academic-page > .academic-panel:first-of-type
+  .academic-toolbar-title h3 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.academic-page > .academic-panel:first-of-type
+  .academic-toolbar-title span {
+  margin-top: 5px;
+
+  color: #71809a;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   FORM UPLOAD
+   ========================================================= */
+
+/*
+  Karena form dari DiplomaPage.tsx saat ini memakai inline style,
+  bagian ini juga menata elemen dasarnya supaya tetap modern.
+*/
+
+.academic-page > .academic-panel:first-of-type form {
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  align-items: end;
+
+  gap: 18px 24px !important;
+
+  padding: 18px 20px 20px;
+
+  margin-top: 0 !important;
+}
+
+.academic-page > .academic-panel:first-of-type form > div {
+  min-width: 0;
+}
+
+.academic-page > .academic-panel:first-of-type form label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #1f365a;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-align: left;
+}
+
+/* SELECT SISWA */
+.academic-page > .academic-panel:first-of-type select {
+  width: 100% !important;
+  min-height: 44px;
+
+  margin-top: 0 !important;
+
+  padding: 0 12px !important;
+
+  border: 1px solid #d7e0eb;
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #334155;
+
+  font-size: 12px;
+
+  cursor: pointer;
+}
+
+.academic-page > .academic-panel:first-of-type select:focus {
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 130, 246, 0.09);
+}
+
+/* FILE INPUT */
+.academic-page > .academic-panel:first-of-type
+  input[type="file"] {
+  width: 100%;
+
+  min-height: 44px;
+
+  margin-top: 0 !important;
+
+  padding: 6px 8px;
+
+  border: 1px solid #d7e0eb;
+  border-radius: 9px;
+
+  background: #ffffff;
+  color: #475569;
+
+  font-size: 12px;
+}
+
+.academic-page
+  > .academic-panel:first-of-type
+  input[type="file"]::file-selector-button {
+  height: 30px;
+
+  margin-right: 12px;
+  padding: 0 13px;
+
+  border: 0;
+  border-radius: 7px;
+
+  background: #f1f5f9;
+  color: #1e293b;
+
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.academic-page
+  > .academic-panel:first-of-type
+  input[type="file"]::file-selector-button:hover {
+  background: #e2e8f0;
+}
+
+/* Nama file */
+.academic-page > .academic-panel:first-of-type form > div > div {
+  color: #64748b;
+
+  font-size: 11px;
+}
+
+/* Tombol upload dibuat full row */
+.academic-page > .academic-panel:first-of-type form > div:last-child {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: center;
+
+  padding-top: 4px;
+}
+
+.academic-page
+  > .academic-panel:first-of-type
+  form
+  > div:last-child
+  .primary-button {
+  min-width: 220px;
+}
+
+/* =========================================================
+   ALERT UPLOAD
+   ========================================================= */
+
+.academic-page > .academic-panel:first-of-type .student-alert {
+  margin: 16px 20px 0;
+
+  border-radius: 10px;
+}
+
+/* =========================================================
+   HASIL KODE VERIFIKASI / TRANSACTION HASH
+   ========================================================= */
+
+.academic-page > .academic-panel:first-of-type
+  > div[style*="margin-top"] {
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+
+  border: 1px solid #dbe5f2 !important;
+  border-radius: 9px !important;
+
+  background: #f8fafc !important;
+
+  color: #334155;
+}
+
+/* =========================================================
+   KARTU STATISTIK
+   ========================================================= */
+
+.academic-page .document-card-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin: 0 0 18px;
+}
+
+.academic-page .document-card {
+  position: relative;
+
+  min-height: 145px;
+
+  padding: 20px 20px 18px;
+
+  border: 1px solid #dde5ef;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.035);
+}
+
+.academic-page .document-card-header {
+  margin-bottom: 8px;
+}
+
+.academic-page .document-card h3 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.academic-page .document-card p {
+  margin: 7px 0 0;
+
+  color: #7c8ba2;
+
+  font-size: 11px;
+}
+
+.academic-page .document-card-icon {
+  position: absolute;
+
+  top: 18px;
+  right: 18px;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 11px;
+
+  background: #eaf1ff;
+  color: #2563eb;
+}
+
+.academic-page .document-number {
+  margin-top: 22px;
+
+  text-align: center;
+
+  color: #102341;
+
+  font-size: 29px;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.academic-page .document-label {
+  margin-top: 7px;
+
+  text-align: center;
+
+  color: #8491a5;
+
+  font-size: 10px;
+}
+
+/* =========================================================
+   PANEL DAFTAR IJAZAH
+   ========================================================= */
+
+.academic-page .academic-panel {
+  overflow: hidden;
+
+  border: 1px solid #dde5ef;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.academic-page .academic-toolbar {
+  min-height: 70px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 20px;
+
+  border-bottom: 1px solid #e7edf4;
+}
+
+.academic-page .academic-toolbar-title h3 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.academic-page .academic-toolbar-title span {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #7b899f;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   TABEL IJAZAH
+   ========================================================= */
+
+.academic-page .academic-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.academic-page .academic-table {
+  width: 100%;
+
+  min-width: 1120px;
+
+  border-collapse: collapse;
+
+  table-layout: auto;
+}
+
+/* Header */
+.academic-page .academic-table th {
+  padding: 13px 14px;
+
+  border-bottom: 1px solid #e3e9f1;
+
+  background: #f8fafc;
+  color: #52627a;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.025em;
+
+  text-align: left;
+  text-transform: none;
+
+  white-space: nowrap;
+}
+
+/* Body */
+.academic-page .academic-table td {
+  height: 58px;
+
+  padding: 11px 14px;
+
+  border-bottom: 1px solid #edf1f5;
+
+  color: #334155;
+
+  font-size: 12px;
+
+  text-align: left;
+  vertical-align: middle;
+}
+
+.academic-page .academic-table tbody tr {
+  transition: 0.15s ease;
+}
+
+.academic-page .academic-table tbody tr:hover {
+  background: #fafcff;
+}
+
+.academic-page .academic-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Lebar kolom khusus 8 kolom Ijazah */
+
+.academic-page .academic-table th:nth-child(1),
+.academic-page .academic-table td:nth-child(1) {
+  width: 55px;
+}
+
+.academic-page .academic-table th:nth-child(2),
+.academic-page .academic-table td:nth-child(2) {
+  min-width: 110px;
+}
+
+.academic-page .academic-table th:nth-child(3),
+.academic-page .academic-table td:nth-child(3) {
+  min-width: 175px;
+}
+
+.academic-page .academic-table th:nth-child(4),
+.academic-page .academic-table td:nth-child(4) {
+  min-width: 105px;
+}
+
+.academic-page .academic-table th:nth-child(5),
+.academic-page .academic-table td:nth-child(5) {
+  min-width: 225px;
+}
+
+.academic-page .academic-table th:nth-child(6),
+.academic-page .academic-table td:nth-child(6) {
+  min-width: 200px;
+}
+
+.academic-page .academic-table th:nth-child(7),
+.academic-page .academic-table td:nth-child(7) {
+  min-width: 110px;
+}
+
+.academic-page .academic-table th:nth-child(8),
+.academic-page .academic-table td:nth-child(8) {
+  min-width: 135px;
+}
+
+/* =========================================================
+   KODE VERIFIKASI
+   ========================================================= */
+
+.academic-page .academic-code {
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 190px;
+
+  padding: 5px 8px;
+
+  overflow: hidden;
+
+  border: 1px solid #cfe0ff;
+  border-radius: 6px;
+
+  background: #edf4ff;
+  color: #1d4ed8;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   STATUS BADGE
+   ========================================================= */
+
+.academic-page .academic-badge {
+  min-width: 78px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.academic-page .academic-badge.success {
+  background: #e7f8ef;
+  color: #168247;
+}
+
+.academic-page .academic-badge.warning {
+  background: #fff5df;
+  color: #b26a00;
+}
+
+.academic-page .academic-badge.danger {
+  background: #feecec;
+  color: #c62828;
+}
+
+/* =========================================================
+   SCROLLBAR TABEL
+   ========================================================= */
+
+.academic-page .academic-table-wrapper::-webkit-scrollbar {
+  height: 7px;
+}
+
+.academic-page .academic-table-wrapper::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.academic-page .academic-table-wrapper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+
+  border-radius: 999px;
+}
+
+/* =========================================================
+   LOADING / EMPTY
+   ========================================================= */
+
+.academic-page .empty-academic {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 24px;
+
+  text-align: center;
+}
+
+.academic-page .table-state {
+  min-height: 260px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .academic-page .document-card-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .academic-page .academic-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .academic-page .academic-header > div:last-child {
+    width: 100%;
+  }
+
+  .academic-page .academic-header > div:last-child button {
+    flex: 1;
+  }
+
+  .academic-page > .academic-panel:first-of-type form {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-page
+    > .academic-panel:first-of-type
+    form
+    > div:last-child {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .academic-page .document-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .academic-page .academic-header > div:last-child {
+    flex-direction: column;
+  }
+
+  .academic-page .academic-header > div:last-child button {
+    width: 100%;
+  }
+
+  .academic-page .academic-title {
+    align-items: flex-start;
+  }
+
+  .academic-page .academic-title h2 {
+    font-size: 23px;
+  }
+}
+
+/* =========================================================
+   VERIFIKASI DOKUMEN - FINAL POLISHED UI
+   TEMPEL PALING BAWAH App.css
+   ========================================================= */
+
+.verification-page {
+  width: 100%;
+  max-width: 1450px;
+
+  margin: 0 auto;
+
+  padding: 10px 6px 36px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.verification-page .academic-header {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+
+  margin-bottom: 22px;
+  padding: 0;
+}
+
+.verification-page .academic-title {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  min-width: 0;
+}
+
+/* ICON HEADER */
+
+.verification-page .academic-icon {
+  width: 52px;
+  height: 52px;
+
+  min-width: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background: #eaf1ff;
+  color: #2563eb;
+
+  box-shadow: none;
+}
+
+/* JUDUL */
+
+.verification-page .module-eyebrow {
+  margin: 0 0 5px;
+
+  color: #5270a3;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.verification-page .academic-title h2 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 28px;
+  line-height: 1.2;
+  font-weight: 800;
+
+  letter-spacing: -0.5px;
+}
+
+.verification-page .academic-title p {
+  margin: 6px 0 0;
+
+  color: #71809a;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* RESET */
+
+.verification-page .secondary-button {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 16px;
+
+  border: 1px solid #dbe3ee;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #334155;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  box-shadow: 0 2px 5px rgba(15, 23, 42, 0.02);
+
+  transition: 0.18s ease;
+}
+
+.verification-page .secondary-button:hover {
+  background: #f8fafc;
+
+  border-color: #cbd5e1;
+
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+}
+
+/* =========================================================
+   GRID UTAMA
+   ========================================================= */
+
+.verification-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 20px;
+
+  align-items: stretch;
+}
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.verification-page .academic-panel {
+  min-width: 0;
+
+  overflow: hidden;
+
+  border: 1px solid #dde5ef;
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 4px 16px rgb(153, 184, 255);
+}
+
+/* =========================================================
+   HEADER PANEL
+   ========================================================= */
+
+.verification-panel-header {
+  min-height: 130px;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 22px 70px 22px 24px;
+
+  border-bottom: 1px solid #e8edf4;
+
+  text-align: center;
+
+  background: #ffffff;
+}
+
+/* Isi judul panel */
+
+.verification-panel-header > div:first-child {
+  width: 100%;
+  text-align: center;
+}
+
+.verification-panel-header .module-eyebrow {
+  margin: 0 0 7px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+.verification-panel-header h3 {
+  margin: 0;
+
+  color: #102341;
+
+  font-size: 21px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  text-align: center;
+}
+
+.verification-panel-header p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+/* Icon kecil panel kiri */
+
+.verification-panel-header .verification-icon {
+  position: absolute;
+
+  right: 24px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #edf4ff;
+  color: #2563eb;
+}
+
+/* =========================================================
+   FORM AREA
+   ========================================================= */
+
+.verification-form {
+  padding: 24px 30px 28px;
+}
+
+/* GROUP */
+
+.verification-form .form-group {
+  margin-bottom: 20px;
+}
+
+.verification-form .form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #263b5d;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* INPUT KODE */
+
+.verification-form .form-group input[type="text"] {
+  width: 100%;
+  height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #d6dfeb;
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #ffffff;
+  color: #88b6ff;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.verification-form
+  .form-group
+  input[type="text"]::placeholder {
+  color: #9aa7ba;
+}
+
+.verification-form
+  .form-group
+  input[type="text"]:focus {
+  border-color: #3b82f6;
+
+  box-shadow:
+    0 0 0 3px rgba(59, 131, 246, 0.915);
+}
+
+/* =========================================================
+   FILE UPLOAD
+   ========================================================= */
+
+.file-upload {
+  width: 100%;
+
+  min-height: 170px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 22px;
+
+  border: 1px dashed #bfd0e7;
+  border-radius: 13px;
+
+  background: #f8fafc;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.file-upload:hover {
+  border-color: #73a4f5;
+
+  background: #f4f8ff;
+
+  box-shadow:
+    0 4px 14px rgb(141, 176, 251);
+}
+
+.file-upload:active {
+  transform: scale(0.997);
+}
+
+.file-upload.selected {
+  border-style: solid;
+
+  border-color: #73a4f5;
+
+  background: #eff6ff;
+}
+
+/* Icon upload */
+
+.file-upload-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 5px;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+  color: #2563eb;
+
+  box-shadow:
+    0 3px 12px rgb(113, 158, 255);
+}
+
+.file-upload strong {
+  max-width: 90%;
+
+  overflow: hidden;
+
+  color: #e5e5e5;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-upload span {
+  max-width: 90%;
+
+  color: #7a8aa2;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   HASH SHA256
+   ========================================================= */
+
+.hash-preview {
+  margin: -3px 0 18px;
+
+  padding: 12px 13px;
+
+  border: 1px solid #dde5ef;
+  border-radius: 9px;
+
+  background: #f8fafc;
+}
+
+.hash-preview span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-align: center;
+}
+
+.hash-preview code {
+  display: block;
+
+  width: 100%;
+
+  padding: 7px 10px;
+
+  overflow-wrap: anywhere;
+
+  border-radius: 6px;
+
+  background: #e9f2ff;
+  color: #cbd5e1;
+
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  font-size: 10px;
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+/* =========================================================
+   BUTTON VERIFIKASI
+   ========================================================= */
+
+.verification-button {
+  width: 100%;
+
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.18);
+
+  transition:
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.verification-button:hover {
+  background: #1d4ed8;
+
+  box-shadow:
+    0 7px 18px rgba(37, 99, 235, 0.22);
+}
+
+.verification-button:active {
+  transform: translateY(1px);
+}
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.verification-alert {
+  margin: 18px 30px 0;
+
+  padding: 12px 14px;
+
+  display: flex;
+  align-items: flex-start;
+
+  gap: 10px;
+
+  border-radius: 10px;
+}
+
+.verification-alert.error {
+  border: 1px solid #fecaca;
+
+  background: #fff4f4;
+  color: #b91c1c;
+}
+
+.verification-alert strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.verification-alert span {
+  color: #a63a3a;
+
+  font-size: 11px;
+}
+
+/* =========================================================
+   EMPTY RESULT
+   ========================================================= */
+
+.verification-empty {
+  min-height: 440px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 35px 28px;
+
+  text-align: center;
+}
+
+.verification-empty-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 18px;
+
+  border-radius: 16px;
+
+  background: #f1f5f9;
+  color: #cee2ff;
+}
+
+.verification-empty h3 {
+  margin: 0;
+
+  color: #e8f1ff;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.verification-empty p {
+  max-width: 300px;
+
+  margin: 7px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   RESULT
+   ========================================================= */
+
+.verification-result {
+  padding: 24px 28px 28px;
+}
+
+.verification-result-status {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  padding: 15px 16px;
+
+  border-radius: 11px;
+}
+
+.verification-result-status.valid {
+  border: 1px solid #bbf7d0;
+
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.verification-result-status.invalid {
+  border: 1px solid #fecaca;
+
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.verification-result-status strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.verification-result-status span {
+  color: #64748b;
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   DETAIL HASIL
+   ========================================================= */
+
+.verification-details {
+  margin-top: 20px;
+
+  border-top: 1px solid #e8edf4;
+}
+
+.verification-detail {
+  min-height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 4px;
+
+  border-bottom: 1px solid #edf1f5;
+}
+
+.verification-detail span {
+  flex: 0 0 42%;
+
+  color: #d2e3ff;
+
+  font-size: 11px;
+}
+
+.verification-detail strong {
+  flex: 1;
+
+  color: #1e293b;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-align: right;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+  .verification-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .verification-empty {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .verification-page {
+    padding: 8px 0 30px;
+  }
+
+  .verification-page .academic-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .verification-page .secondary-button {
+    width: 100%;
+  }
+
+  .verification-panel-header {
+    min-height: auto;
+
+    padding: 20px 65px 20px 20px;
+  }
+
+  .verification-form {
+    padding: 20px;
+  }
+
+  .verification-alert {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .verification-result {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 520px) {
+  .verification-page .academic-title {
+    align-items: flex-start;
+  }
+
+  .verification-page .academic-icon {
+    width: 46px;
+    height: 46px;
+
+    min-width: 46px;
+  }
+
+  .verification-page .academic-title h2 {
+    font-size: 23px;
+  }
+
+  .verification-page .academic-title p {
+    font-size: 12px;
+  }
+
+  .verification-panel-header h3 {
+    font-size: 18px;
+  }
+
+  .verification-panel-header p {
+    font-size: 11px;
+  }
+
+  .verification-panel-header
+    .verification-icon {
+    width: 40px;
+    height: 40px;
+
+    right: 16px;
+  }
+
+  .verification-form {
+    padding: 16px;
+  }
+
+  .file-upload {
+    min-height: 150px;
+
+    padding: 18px;
+  }
+
+  .verification-detail {
+    align-items: flex-start;
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+  .verification-detail span,
+  .verification-detail strong {
+    width: 100%;
+
+    flex: auto;
+
+    text-align: left;
+  }
+}
+
+/* =========================================================
+   CERTIFICATE UPLOAD FORM - CLEAN LIGHT STYLE
+   ========================================================= */
+
+/* Form upload sertifikat */
+.academic-panel form {
+  background: #ffffff;
+}
+
+/* Label */
+.academic-panel form label {
+  display: block;
+  margin-bottom: 8px;
+  color: #10203d;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   INPUT + SELECT + DATE
+   ========================================================= */
+
+.academic-panel form input,
+.academic-panel form select {
+  width: 100% !important;
+  min-height: 48px !important;
+
+  padding: 0 14px !important;
+
+  background: #ffffff !important;
+  color: #17233d !important;
+
+  border: 1px solid #d7dfeb !important;
+  border-radius: 10px !important;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+/* Placeholder */
+.academic-panel form input::placeholder {
+  color: #9aa8bc !important;
+  opacity: 1;
+}
+
+/* Hover */
+.academic-panel form input:hover,
+.academic-panel form select:hover {
+  border-color: #b6c5dc !important;
+}
+
+/* Focus */
+.academic-panel form input:focus,
+.academic-panel form select:focus {
+  background: #ffffff !important;
+
+  border-color: #3767e8 !important;
+
+  box-shadow:
+    0 0 0 3px rgba(55, 103, 232, 0.1) !important;
+}
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.academic-panel form select {
+  cursor: pointer;
+
+  appearance: auto;
+
+  background-color: #ffffff !important;
+  color: #17233d !important;
+}
+
+/* Isi pilihan dropdown */
+.academic-panel form select option {
+  background: #ffffff !important;
+  color: #17233d !important;
+}
+
+/* =========================================================
+   INPUT TEXT INSTANSI
+   ========================================================= */
+
+.academic-panel form input[type="text"] {
+  background: #ffffff !important;
+  color: #17233d !important;
+}
+
+/* =========================================================
+   DATE INPUT
+   ========================================================= */
+
+.academic-panel form input[type="date"] {
+  background: #ffffff !important;
+  color: #17233d !important;
+
+  color-scheme: light;
+}
+
+/* Icon kalender bawaan browser */
+.academic-panel form
+  input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.65;
+}
+
+/* =========================================================
+   FILE INPUT
+   ========================================================= */
+
+.academic-panel form input[type="file"] {
+  min-height: 48px !important;
+
+  padding: 6px !important;
+
+  background: #f8faff !important;
+
+  border: 1px dashed #b9c9e5 !important;
+  border-radius: 10px !important;
+
+  color: #53627a !important;
+
+  cursor: pointer;
+}
+
+/* Tombol Choose File */
+.academic-panel form
+  input[type="file"]::file-selector-button {
+  height: 34px;
+
+  margin-right: 12px;
+  padding: 0 16px;
+
+  background: #edf3ff;
+
+  color: #3563df;
+
+  border: 0;
+  border-radius: 7px;
+
+  font-family: inherit;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.academic-panel form
+  input[type="file"]::file-selector-button:hover {
+  background: #dfe9ff;
+}
+
+/* =========================================================
+   UPLOAD BUTTON
+   ========================================================= */
+
+.academic-panel form .primary-button {
+  min-height: 46px;
+
+  padding: 0 28px;
+
+  background: #3767e8;
+
+  color: #ffffff;
+
+  border: none;
+  border-radius: 10px;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 16px rgba(55, 103, 232, 0.2);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.academic-panel form .primary-button:hover {
+  background: #2f5bd3;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 20px rgba(55, 103, 232, 0.25);
+}
+
+.academic-panel form .primary-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================================
+   FORM PANEL
+   ========================================================= */
+
+.academic-panel {
+  background: #ffffff;
+
+  border: 1px solid #dce4ef;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 35, 70, 0.04);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .academic-panel form {
+    grid-template-columns: 1fr !important;
+  }
+
+  .academic-panel form > div {
+    grid-column: auto !important;
+  }
+
+  .academic-panel form .primary-button {
+    width: 100%;
+  }
+}

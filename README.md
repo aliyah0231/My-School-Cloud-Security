@@ -1,230 +1,653 @@
-\# My-School Cloud Security
+# My-School Cloud Security
+
+**My-School Cloud Security** adalah aplikasi administrasi sekolah
+berbasis web yang menggabungkan pengelolaan data akademik dengan
+penerapan keamanan aplikasi, containerization, network segmentation,
+HTTPS/TLS, serta verifikasi dokumen menggunakan blockchain.
+
+> Repository ini menyimpan source code aplikasi. File yang mengandung
+> credential, private key, sertifikat lokal, backup database, cookie,
+> dan data lokal tidak disimpan di GitHub.
+
+------------------------------------------------------------------------
+
+## Fitur Utama
+
+-   Autentikasi pengguna
+-   Role-Based Access Control (RBAC)
+-   Pengelolaan data siswa
+-   Pengelolaan data guru
+-   Pengelolaan mata pelajaran
+-   Pengelolaan nilai
+-   Transkrip nilai
+-   Kelulusan
+-   Ijazah
+-   Sertifikat
+-   Verifikasi keaslian dokumen
+-   Audit log
+-   SHA-256 document hashing
+-   Integrasi blockchain
+-   Rate limiting
+-   Security headers
+-   HTTPS/TLS
+-   Docker network segmentation
+-   Backup dan recovery PostgreSQL
+
+## Role Pengguna
+
+Sistem menyediakan beberapa role dengan hak akses berbeda:
+
+-   `ADMIN`
+-   `STAF_TU`
+-   `GURU`
+-   `SISWA`
+-   `KEPALA_SEKOLAH`
+-   `MITRA_INDUSTRI`
+
+Hak akses setiap role dikendalikan melalui mekanisme **RBAC** pada
+backend.
+
+------------------------------------------------------------------------
+
+## Teknologi
+
+### Frontend
+
+-   React
+-   TypeScript
+-   Vite
+-   React Router
+-   Axios
+-   Lucide React
+-   Nginx
+
+### Backend
+
+-   Node.js
+-   Express
+-   TypeScript
+-   Prisma ORM
+-   JWT
+-   Argon2
+-   Ethers.js
+
+### Database
+
+-   PostgreSQL 17
+
+### Blockchain
+
+-   Solidity
+-   Hardhat
+-   Ganache
+-   Ethers.js
+
+### Infrastructure & Security
+
+-   Docker
+-   Docker Compose
+-   Nginx Reverse Proxy
+-   HTTPS/TLS
+-   Public & Private Docker Network
+-   Rate Limiting
+-   Security Headers
+-   Request Filtering
+-   Database Backup & Recovery
+
+------------------------------------------------------------------------
+
+## Arsitektur Sistem
+
+``` text
+                    USER / BROWSER
+                          |
+                      HTTPS :8443
+                          |
+                          v
+                 +------------------+
+                 | FRONTEND / NGINX |
+                 |  Security Layer  |
+                 +--------+---------+
+                          |
+                     public_net
+                          |
+                          v
+                 +------------------+
+                 |     BACKEND      |
+                 | Express + RBAC   |
+                 +--------+---------+
+                          |
+                     private_net
+                          |
+                          v
+                 +------------------+
+                 |    PostgreSQL    |
+                 | Private Database |
+                 +------------------+
+
+Backend
+   |
+   +----> Blockchain / Ganache
+           |
+           +----> Document Hash Verification
+```
+
+Frontend tidak terhubung langsung ke PostgreSQL. Backend menjadi
+penghubung antara application layer dan data layer.
+
+------------------------------------------------------------------------
+
+## Struktur Project
+
+``` text
+My-School/
+├── backend/
+│   ├── blockchain/
+│   ├── prisma/
+│   ├── src/
+│   ├── Dockerfile
+│   └── package.json
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   └── package.json
+│
+├── docker-compose.yml
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+------------------------------------------------------------------------
 
+## Menjalankan Project
 
+### 1. Persyaratan
 
-My-School adalah aplikasi administrasi sekolah berbasis web yang dikembangkan menggunakan React, Node.js/Express, PostgreSQL, Prisma, Docker, Nginx, dan Blockchain.
+Pastikan komputer memiliki:
 
+-   Git
+-   Docker Desktop
+-   WSL 2 pada Windows
+-   Node.js jika ingin menjalankan service tanpa Docker
+-   Ganache jika menggunakan blockchain lokal
 
+### 2. Clone Repository
 
-Project ini menerapkan keamanan pada sisi aplikasi dan infrastruktur, seperti Role-Based Access Control (RBAC), SHA-256, verifikasi dokumen berbasis blockchain, network segmentation, HTTPS/TLS, rate limiting, security headers, monitoring, serta backup dan recovery database.
+``` bash
+git clone https://github.com/aliyah0231/My-School-Cloud-Security.git
+cd My-School-Cloud-Security
+```
 
+### 3. Siapkan Environment Variables
 
+File environment asli sengaja tidak disimpan di repository.
 
-\---
+Gunakan `.env.example` sebagai referensi dan buat konfigurasi lokal yang
+dibutuhkan, misalnya `.env.docker`.
 
+Contoh variabel:
 
+``` env
+NODE_ENV=development
+PORT=4000
 
-\## Fitur Utama
+DATABASE_URL=
 
+FRONTEND_URL=
 
+JWT_SECRET=
+JWT_EXPIRES_IN=8h
+COOKIE_SECRET=
 
-\- Autentikasi pengguna
+MAX_FILE_SIZE_MB=10
 
-\- Role-Based Access Control (RBAC)
+BLOCKCHAIN_RPC_URL=
+BLOCKCHAIN_CONTRACT_ADDRESS=
+BLOCKCHAIN_PRIVATE_KEY=
+```
 
-\- Data siswa
+**Jangan commit nilai asli** untuk password database, JWT secret, cookie
+secret, private key blockchain, atau credential lainnya.
 
-\- Data guru
+------------------------------------------------------------------------
 
-\- Mata pelajaran
+## Menjalankan dengan Docker
 
-\- Nilai siswa
+Pastikan Docker Desktop aktif, kemudian:
 
-\- Transkrip nilai
+``` bash
+docker compose up -d
+```
 
-\- Kelulusan
+Periksa container:
 
-\- Ijazah
+``` bash
+docker compose ps
+```
 
-\- Sertifikat PKL/Magang
+Service utama:
 
-\- Persetujuan dan penolakan dokumen
+``` text
+smk_frontend
+smk_backend
+smk_postgres
+```
 
-\- Verifikasi keaslian dokumen
+PostgreSQL seharusnya berstatus `healthy`.
 
-\- Audit log
+Untuk melihat semua container termasuk yang berhenti:
 
-\- Integrasi Blockchain
+``` bash
+docker compose ps -a
+```
 
-\- SHA-256 Document Hashing
+------------------------------------------------------------------------
 
+## Mengakses Aplikasi
 
+Akses utama melalui HTTPS:
 
-\---
+``` text
+https://localhost:8443
+```
 
+HTTP lokal:
 
+``` text
+http://localhost:8080
+```
 
-\## Role Pengguna
+Konfigurasi Nginx mengarahkan HTTP ke HTTPS.
 
+> Pada development lokal, browser dapat menampilkan peringatan karena
+> sertifikat HTTPS bersifat lokal/self-signed. Ini berbeda dengan
+> sertifikat publik dari Certificate Authority.
 
+------------------------------------------------------------------------
 
-Sistem memiliki beberapa role, antara lain:
+## Network Segmentation
 
+Project menggunakan dua Docker network.
 
+### `public_net`
 
-\- SISWA
+Digunakan oleh:
 
-\- GURU
+-   Frontend / Nginx
+-   Backend
 
-\- STAF\_TU
+### `private_net`
 
-\- KEPALA\_SEKOLAH
+Digunakan oleh:
 
-\- MITRA\_INDUSTRI
+-   Backend
+-   PostgreSQL
 
-\- ADMIN
+Database tidak diekspos langsung melalui frontend.
 
+Untuk memeriksa network:
 
+``` bash
+docker network inspect my-school_public_net
+docker network inspect my-school_private_net
+```
 
-Setiap role memiliki hak akses yang berbeda melalui mekanisme RBAC.
+------------------------------------------------------------------------
 
+## Keamanan yang Diterapkan
 
+### HTTPS/TLS
 
-\---
+Nginx menyediakan endpoint HTTPS pada container dan host memetakan:
 
+``` text
+8443 -> 443
+```
 
+### Security Headers
 
-\## Teknologi
+Konfigurasi Nginx menggunakan header keamanan seperti:
 
+-   `X-Frame-Options`
+-   `X-Content-Type-Options`
+-   `Referrer-Policy`
+-   `Permissions-Policy`
+-   `Content-Security-Policy`
 
+### Rate Limiting
 
-\### Frontend
+Request berlebihan dibatasi untuk membantu mengurangi abuse terhadap
+API.
 
+Pengujian dapat menghasilkan:
 
+``` text
+429 Too Many Requests
+```
 
-\- React
+sesuai konfigurasi limit yang aktif.
 
-\- TypeScript
+### Request Filtering
 
-\- Vite
+Nginx dikonfigurasi untuk menolak pola request tertentu yang
+mencurigakan, termasuk pola yang menyerupai:
 
-\- React Router
+-   SQL Injection
+-   Cross-Site Scripting (XSS)
+-   Path Traversal
 
-\- Axios
+Filtering di reverse proxy merupakan lapisan tambahan dan tidak
+menggantikan validasi input serta keamanan pada backend.
 
-\- Lucide React
+### RBAC
 
+Endpoint backend dilindungi berdasarkan role dan permission pengguna.
 
+### Password & Authentication
 
-\### Backend
+Backend menggunakan JWT untuk autentikasi dan Argon2 untuk hashing
+password.
 
+------------------------------------------------------------------------
 
+## Blockchain Document Verification
 
-\- Node.js
+Sistem menggunakan SHA-256 dan blockchain untuk membantu memverifikasi
+integritas dokumen.
 
-\- Express
+Alur sederhananya:
 
-\- TypeScript
+``` text
+Dokumen
+   |
+   v
+SHA-256 Hash
+   |
+   +----> Database
+   |
+   +----> Blockchain
+```
 
-\- Prisma ORM
+Saat dokumen diverifikasi, hash dapat dihitung kembali dan dibandingkan
+dengan data referensi.
 
-\- PostgreSQL
+``` text
+Hash sama    -> dokumen sesuai / valid
+Hash berbeda -> dokumen berubah / tidak valid
+```
 
-\- JWT
+Smart contract utama berada pada:
 
-\- Argon2
+``` text
+backend/blockchain/contracts/DocumentRegistry.sol
+```
 
-\- Ethers.js
+Untuk development lokal, blockchain dapat dijalankan menggunakan
+Ganache.
 
+------------------------------------------------------------------------
 
+## Database PostgreSQL
 
-\### Blockchain
+Database berjalan sebagai container PostgreSQL pada private network.
 
+Cek status:
 
+``` bash
+docker compose ps
+```
 
-\- Solidity
+Lihat log database:
 
-\- Hardhat
+``` bash
+docker compose logs postgres
+```
 
-\- Ganache
+------------------------------------------------------------------------
 
-\- Ethers.js
+## Backup Database
 
+Backup database sebaiknya disimpan di luar GitHub.
 
+Contoh konsep backup PostgreSQL:
 
-\### Cloud Security / Infrastructure
+``` bash
+pg_dump -U postgres -F c -d smk_administrasi -f smk_administrasi.backup
+```
 
+Jika PostgreSQL hanya tersedia di dalam container, perintah dapat
+disesuaikan dengan `docker exec`.
 
+Project ini telah melakukan pengujian restore backup ke database uji dan
+struktur database berhasil dipulihkan.
 
-\- Docker
+------------------------------------------------------------------------
 
-\- Docker Compose
+## Restore Database
 
-\- Nginx Reverse Proxy
+Contoh:
 
-\- Public \& Private Docker Network
+``` bash
+pg_restore -U postgres -d smk_administrasi --no-owner --no-privileges smk_administrasi.backup
+```
 
-\- HTTPS/TLS
+Sebelum melakukan restore ke database utama, disarankan menguji backup
+pada database terpisah terlebih dahulu.
 
-\- Rate Limiting
+------------------------------------------------------------------------
 
-\- Security Headers
+## Monitoring & Logs
 
-\- PostgreSQL Private Container
+Status container:
 
-\- Backup \& Recovery
+``` bash
+docker compose ps
+```
 
+Penggunaan CPU dan memory:
 
+``` bash
+docker stats
+```
 
-\---
+Backend:
 
+``` bash
+docker compose logs backend
+```
 
+Frontend / Nginx:
 
-\## Arsitektur Sistem
+``` bash
+docker compose logs frontend
+```
 
+PostgreSQL:
 
+``` bash
+docker compose logs postgres
+```
 
-```text
+Untuk log terbaru:
 
-&#x20;                   USER / BROWSER
+``` bash
+docker compose logs backend --tail=100
+docker compose logs frontend --tail=100
+docker compose logs postgres --tail=100
+```
 
-&#x20;                         |
+------------------------------------------------------------------------
 
-&#x20;                         |
+## Menghentikan Aplikasi
 
-&#x20;                   HTTPS :8443
+``` bash
+docker compose down
+```
 
-&#x20;                         |
+Untuk menjalankan kembali:
 
-&#x20;                         v
+``` bash
+docker compose up -d
+```
 
-&#x20;                +------------------+
+> Hindari `docker compose down -v` jika Anda tidak bermaksud menghapus
+> Docker volume database.
 
-&#x20;                | FRONTEND / NGINX |
+------------------------------------------------------------------------
 
-&#x20;                |  Security Layer  |
+## Menjalankan Kembali di Komputer yang Sama
 
-&#x20;                +--------+---------+
+Jika source code, environment variables, certificate lokal, blockchain
+lokal, dan Docker volume masih tersedia:
 
-&#x20;                         |
+``` powershell
+cd D:\My-School
+docker compose up -d
+docker compose ps
+```
 
-&#x20;                    public\_net
+Kemudian buka:
 
-&#x20;                         |
+``` text
+https://localhost:8443
+```
 
-&#x20;                         v
+------------------------------------------------------------------------
 
-&#x20;                +------------------+
+## Menjalankan di Komputer Baru
 
-&#x20;                |     BACKEND      |
+Setelah clone dari GitHub, beberapa komponen lokal perlu disiapkan
+kembali karena sengaja tidak disimpan di repository:
 
-&#x20;                | Express + RBAC   |
+1.  Environment variables (`.env` / `.env.docker`)
+2.  Password dan secret aplikasi
+3.  Blockchain private key
+4.  Blockchain RPC URL
+5.  Contract address
+6.  Ganache atau blockchain network yang digunakan
+7.  Database atau file backup
+8.  File upload lokal
+9.  Sertifikat HTTPS lokal bila diperlukan
 
-&#x20;                +--------+---------+
+Setelah konfigurasi tersedia, jalankan:
 
-&#x20;                         |
+``` bash
+docker compose up -d
+```
 
-&#x20;                    private\_net
+------------------------------------------------------------------------
 
-&#x20;                         |
+## Troubleshooting
 
-&#x20;                         v
+### Docker tidak berjalan
 
-&#x20;                +------------------+
+``` bash
+docker info
+```
 
-&#x20;                |    PostgreSQL    |
+Pastikan Docker Desktop sudah aktif.
 
-&#x20;                | Private Database |
+### Container berhenti
 
-&#x20;                +------------------+
+``` bash
+docker compose ps -a
+```
 
+Kemudian periksa service terkait:
+
+``` bash
+docker compose logs frontend --tail=100
+docker compose logs backend --tail=100
+docker compose logs postgres --tail=100
+```
+
+### Tes konfigurasi Nginx
+
+``` bash
+docker exec smk_frontend nginx -t
+```
+
+### Tes HTTPS
+
+Pada development lokal:
+
+``` bash
+curl -k -I https://localhost:8443
+```
+
+### Restart seluruh service
+
+``` bash
+docker compose down
+docker compose up -d
+```
+
+------------------------------------------------------------------------
+
+## File yang Tidak Disimpan di GitHub
+
+Untuk keamanan, repository mengabaikan file/data lokal seperti:
+
+``` text
+.env
+.env.docker
+*.key
+frontend/certs/
+backup/
+postgres-data/
+backend/uploads/
+*cookies*.txt
+node_modules/
+dist/
+```
+
+Jangan menghapus aturan tersebut dari `.gitignore` tanpa memahami
+risikonya.
+
+------------------------------------------------------------------------
+
+## Status Implementasi
+
+Project mencakup:
+
+-   [x] Frontend React
+-   [x] Backend Express
+-   [x] PostgreSQL
+-   [x] Prisma ORM
+-   [x] Authentication
+-   [x] RBAC
+-   [x] SHA-256 hashing
+-   [x] Blockchain document verification
+-   [x] Docker containerization
+-   [x] Docker network segmentation
+-   [x] Nginx reverse proxy
+-   [x] HTTPS/TLS lokal
+-   [x] Security headers
+-   [x] Rate limiting
+-   [x] Request filtering
+-   [x] Audit logging
+-   [x] Database backup
+-   [x] Database restore testing
+-   [x] Container monitoring
+
+------------------------------------------------------------------------
+
+## Repository
+
+**My-School Cloud Security**
+
+Repository GitHub: `aliyah0231/My-School-Cloud-Security`
+
+------------------------------------------------------------------------
+
+## Catatan
+
+Repository ini ditujukan untuk pengembangan dan demonstrasi project
+My-School Cloud Security. Konfigurasi production seperti domain publik,
+trusted TLS certificate, secret management, firewall/cloud security
+group, persistent production storage, serta deployment server perlu
+disiapkan secara terpisah apabila aplikasi akan dipublikasikan.

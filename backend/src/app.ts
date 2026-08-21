@@ -22,6 +22,13 @@ import { errorHandler } from "./middleware/error.middleware.js";
 
 const app = express();
 
+/**
+ * Aplikasi berada di belakang satu reverse proxy Nginx.
+ * Diperlukan agar express-rate-limit membaca IP client dengan benar.
+ */
+app.set("trust proxy", 1);
+
+
 app.use(
   helmet({
     crossOriginResourcePolicy: {

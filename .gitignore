@@ -79,3 +79,22 @@ backend/.windsurf/
 
 # Frontend backup source files
 frontend/src/pages/*.backup.tsx
+
+# =========================================================
+# VAULT / LOCAL APPLICATION SECRETS
+# =========================================================
+secrets/
+
+# =========================================================
+# ROOT LOGIN / TEST CREDENTIAL FILES
+# =========================================================
+/siswa-login-test.json
+
+# =========================================================
+# SECURITY SCAN GENERATED REPORTS
+# =========================================================
+zap-reports/
+
+# LOCAL BLOCKCHAIN HELPER SCRIPTS
+/check-balance.js
+/check-wallet.js

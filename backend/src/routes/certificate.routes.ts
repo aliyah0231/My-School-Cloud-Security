@@ -1,4 +1,6 @@
-import { Router } from "express";
+import {
+  Router,
+} from "express";
 
 import {
   getAllCertificates,
@@ -6,6 +8,8 @@ import {
   uploadCertificate,
   approveCertificate,
   rejectCertificate,
+  signCertificateDudi,
+  verifyCertificateDudiSignature,
 } from "../controllers/certificate.controller.js";
 
 import {
@@ -23,91 +27,138 @@ import {
   uploadDocument,
 } from "../middleware/upload.middleware.js";
 
-const router = Router();
+
+const router =
+  Router();
+
 
 /**
  * =========================================================
  * UPLOAD SERTIFIKAT PKL / MAGANG
  * =========================================================
- *
- * Hanya STAF TU.
- *
- * POST /api/certificates/upload
  */
 router.post(
   "/upload",
+
   requireAuth,
-  requireRole("STAF_TU"),
-  uploadDocument.single("certificate"),
+
+  requireRole(
+    "STAF_TU",
+  ),
+
+  uploadDocument.single(
+    "certificate",
+  ),
+
   uploadCertificate,
 );
 
+
 /**
  * =========================================================
- * SISWA MELIHAT SERTIFIKAT MILIKNYA SENDIRI
+ * SERTIFIKAT SISWA SENDIRI
  * =========================================================
- *
- * GET /api/certificates/me
  */
 router.get(
   "/me",
+
   requireAuth,
+
   getMyCertificates,
 );
 
-/**
- * =========================================================
- * SETUJUI SERTIFIKAT
- * =========================================================
- *
- * Hanya KEPALA SEKOLAH.
- *
- * PATCH /api/certificates/:id/approve
- */
-router.patch(
-  "/:id/approve",
-  requireAuth,
-  requireRole("KEPALA_SEKOLAH"),
-  approveCertificate,
-);
 
 /**
  * =========================================================
- * TOLAK SERTIFIKAT
+ * DUDI DIGITAL SIGNATURE
  * =========================================================
  *
- * Hanya KEPALA SEKOLAH.
- *
- * PATCH /api/certificates/:id/reject
+ * Hanya MITRA_INDUSTRI.
+ */
+router.post(
+  "/:id/dudi-sign",
+
+  requireAuth,
+
+  requireRole(
+    "MITRA_INDUSTRI",
+  ),
+
+  signCertificateDudi,
+);
+
+
+/**
+ * =========================================================
+ * VERIFIKASI DIGITAL SIGNATURE DUDI
+ * =========================================================
+ */
+router.get(
+  "/:id/dudi-signature/verify",
+
+  requireAuth,
+
+  verifyCertificateDudiSignature,
+);
+
+
+/**
+ * =========================================================
+ * APPROVE SERTIFIKAT
+ * =========================================================
+ */
+router.patch(
+  "/:id/approve",
+
+  requireAuth,
+
+  requireRole(
+    "KEPALA_SEKOLAH",
+  ),
+
+  approveCertificate,
+);
+
+
+/**
+ * =========================================================
+ * REJECT SERTIFIKAT
+ * =========================================================
  */
 router.patch(
   "/:id/reject",
+
   requireAuth,
-  requireRole("KEPALA_SEKOLAH"),
+
+  requireRole(
+    "KEPALA_SEKOLAH",
+  ),
+
   rejectCertificate,
 );
+
 
 /**
  * =========================================================
  * DAFTAR SERTIFIKAT
  * =========================================================
- *
- * SISWA:
- * diarahkan ke getMyCertificates()
- *
- * Role lain:
- * melihat seluruh data sesuai permission.
- *
- * GET /api/certificates
  */
 router.get(
   "/",
+
   requireAuth,
+
   (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction,
+    req:
+      AuthenticatedRequest,
+
+    res:
+      Response,
+
+    next:
+      NextFunction,
   ) => {
+
     if (
       req.user?.role ===
       "SISWA"
@@ -122,14 +173,15 @@ router.get(
       "STAF_TU",
       "KEPALA_SEKOLAH",
       "MITRA_INDUSTRI",
-      "ADMIN",
     )(
       req,
       res,
       next,
     );
   },
+
   getAllCertificates,
 );
+
 
 export default router;

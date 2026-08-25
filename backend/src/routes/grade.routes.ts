@@ -1,46 +1,112 @@
-import { Router } from "express";
+import {
+  Router,
+} from "express";
+
 import {
   getMyGrades,
   getAllGrades,
+  updateGradeWithBlockchainAudit,
 } from "../controllers/grade.controller.js";
+
 import {
   requireAuth,
   requireRole,
   type AuthenticatedRequest,
 } from "../middleware/auth.middleware.js";
-import type { Response, NextFunction } from "express";
 
-const router = Router();
+import type {
+  Response,
+  NextFunction,
+} from "express";
 
-// SISWA mengambil nilai miliknya sendiri
+
+const router =
+  Router();
+
+
+/*
+ * =========================================================
+ * SISWA MELIHAT NILAI SENDIRI
+ * =========================================================
+ */
 router.get(
   "/me",
   requireAuth,
   getMyGrades,
 );
 
-// Route daftar nilai
+
+/*
+ * =========================================================
+ * DAFTAR NILAI
+ * =========================================================
+ */
 router.get(
   "/",
+
   requireAuth,
+
   (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction,
+    req:
+      AuthenticatedRequest,
+
+    res:
+      Response,
+
+    next:
+      NextFunction,
   ) => {
-    // Jika SISWA, hanya berikan nilai miliknya sendiri
-    if (req.user?.role === "SISWA") {
-      return getMyGrades(req, res);
+
+    if (
+      req.user?.role ===
+      "SISWA"
+    ) {
+      return getMyGrades(
+        req,
+        res,
+      );
     }
 
-    // Role lain diperiksa permission-nya
+
     return requireRole(
       "STAF_TU",
       "GURU",
       "KEPALA_SEKOLAH",
-    )(req, res, next);
+    )(
+      req,
+      res,
+      next,
+    );
   },
+
   getAllGrades,
 );
+
+
+/*
+ * =========================================================
+ * UPDATE NILAI + BLOCKCHAIN AUDIT
+ * =========================================================
+ *
+ * GURU:
+ * hanya nilai yang menjadi tanggung jawabnya.
+ *
+ * STAF_TU / KEPALA_SEKOLAH:
+ * dapat melakukan update sesuai role.
+ */
+router.put(
+  "/:gradeId",
+
+  requireAuth,
+
+  requireRole(
+    "GURU",
+    "STAF_TU",
+    "KEPALA_SEKOLAH",
+  ),
+
+  updateGradeWithBlockchainAudit,
+);
+
 
 export default router;

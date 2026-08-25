@@ -1,4 +1,4 @@
-FROM node:24-alpine AS build
+﻿FROM node:24-alpine AS build
 
 WORKDIR /app
 
@@ -22,6 +22,5 @@ COPY certs/localhost.key /etc/nginx/certs/localhost.key
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
-EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]

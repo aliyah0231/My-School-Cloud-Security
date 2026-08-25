@@ -70,6 +70,9 @@ model User {
   role         UserRole
   status       UserStatus @default(ACTIVE)
 
+  mfaEnabled Boolean @default(false) @map("mfa_enabled")
+  mfaSecret  String? @map("mfa_secret")
+
   lastLoginAt DateTime? @map("last_login_at")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
@@ -226,14 +229,18 @@ model Grade {
   @@index([academicYear, semester])
   @@map("grades")
 }
-
 model Transcript {
   id             String    @id @default(uuid()) @db.Uuid
   studentId      String    @unique @map("student_id") @db.Uuid
   transcriptCode String    @unique @map("transcript_code") @db.VarChar(100)
+
   totalCredits   Int       @default(0) @map("total_credits")
   averageScore   Decimal?  @map("average_score") @db.Decimal(5, 2)
   issuedAt       DateTime? @map("issued_at")
+
+  blockchainHash         String?   @map("blockchain_hash") @db.Char(64)
+  blockchainTxHash       String?   @map("blockchain_tx_hash") @db.VarChar(100)
+  blockchainRegisteredAt DateTime? @map("blockchain_registered_at")
 
   student Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
@@ -242,7 +249,6 @@ model Transcript {
 
   @@map("transcripts")
 }
-
 model Graduation {
   id             String           @id @default(uuid()) @db.Uuid
   studentId      String           @unique @map("student_id") @db.Uuid
@@ -303,6 +309,13 @@ model Certificate {
   endDate          DateTime?      @map("end_date")
   status           DocumentStatus @default(PENDING)
   issuedAt         DateTime?      @map("issued_at")
+
+// DIGITAL SIGNATURE DUDI
+  dudiWalletAddress String?   @map("dudi_wallet_address") @db.VarChar(100)
+  dudiSignature     String?   @map("dudi_signature") @db.Text
+  dudiSignedHash    String?   @map("dudi_signed_hash") @db.Char(64)
+  dudiSignedAt      DateTime? @map("dudi_signed_at")
+  dudiSignedBy      String?   @map("dudi_signed_by") @db.Uuid
 
   student       Student              @relation(fields: [studentId], references: [id], onDelete: Cascade)
   verifications VerificationRecord[]

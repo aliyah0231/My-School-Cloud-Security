@@ -1,4 +1,4 @@
-﻿services:
+services:
 
   frontend:
     build:
@@ -7,52 +7,12 @@
 
     container_name: smk_frontend
 
-    expose:
-      - "80"
+    ports:
+      - "8080:80"
+      - "8443:443"
 
     depends_on:
       - backend
-
-    networks:
-      - public_net
-
-
-  waf:
-    image: owasp/modsecurity-crs:nginx
-
-    container_name: smk_waf
-
-    restart: unless-stopped
-
-    depends_on:
-      - frontend
-
-    ports:
-      - "8080:8080"
-      - "8443:8443"
-
-    environment:
-      BACKEND: "http://frontend:80"
-      SERVER_NAME: "localhost"
-
-      PORT: "8080"
-      SSL_PORT: "8443"
-
-      NGINX_ALWAYS_TLS_REDIRECT: "on"
-      SSL_PROTOCOLS: "TLSv1.2 TLSv1.3"
-
-      MODSEC_RULE_ENGINE: "On"
-
-      MODSEC_AUDIT_ENGINE: "RelevantOnly"
-      MODSEC_AUDIT_LOG: "/dev/stdout"
-      MODSEC_AUDIT_LOG_FORMAT: "JSON"
-
-      BLOCKING_PARANOIA: "1"
-      DETECTION_PARANOIA: "1"
-
-      ANOMALY_INBOUND: "5"
-      ANOMALY_OUTBOUND: "4"
-      ALLOWED_METHODS: "GET HEAD POST PUT PATCH DELETE OPTIONS"
 
     networks:
       - public_net
@@ -71,6 +31,7 @@
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/smk_administrasi"
 
+      # Vault bukan secret.
       VAULT_ADDR: "http://vault:8200"
       VAULT_SECRET_PATH: "secret/data/my-school"
 
@@ -115,7 +76,6 @@
       test:
         - CMD-SHELL
         - pg_isready -U postgres -d smk_administrasi
-
       interval: 5s
       timeout: 5s
       retries: 10
@@ -152,7 +112,6 @@
       test:
         - CMD-SHELL
         - VAULT_ADDR=http://127.0.0.1:8200 vault status >/dev/null 2>&1
-
       interval: 3s
       timeout: 3s
       retries: 20
@@ -245,4 +204,3 @@ secrets:
 
   data_encryption_key:
     file: ./secrets/data_encryption_key.txt
-

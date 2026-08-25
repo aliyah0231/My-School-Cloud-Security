@@ -2,6 +2,8 @@
 pragma solidity ^0.8.24;
 
 contract DocumentRegistry {
+    address public owner;
+
     struct Document {
         string verificationCode;
         string documentType;
@@ -11,6 +13,7 @@ contract DocumentRegistry {
     }
 
     mapping(string => Document) private documents;
+    mapping(bytes32 => bool) private registeredHashes;
 
     event DocumentRegistered(
         string indexed verificationCode,
@@ -19,11 +22,26 @@ contract DocumentRegistry {
         uint256 registeredAt
     );
 
+    modifier onlyOwner() {
+        require(
+            msg.sender == owner,
+            "Unauthorized registrar"
+        );
+        _;
+    }
+
+    constructor() {
+        owner = msg.sender;
+    }
+
     function registerDocument(
         string calldata verificationCode,
         string calldata documentType,
         bytes32 documentHash
-    ) external {
+    )
+        external
+        onlyOwner
+    {
         require(
             bytes(verificationCode).length > 0,
             "Verification code wajib diisi"
@@ -39,6 +57,11 @@ contract DocumentRegistry {
             "Dokumen sudah terdaftar"
         );
 
+        require(
+            !registeredHashes[documentHash],
+            "Document hash sudah terdaftar"
+        );
+
         documents[verificationCode] = Document({
             verificationCode: verificationCode,
             documentType: documentType,
@@ -46,6 +69,8 @@ contract DocumentRegistry {
             registeredAt: block.timestamp,
             exists: true
         });
+
+        registeredHashes[documentHash] = true;
 
         emit DocumentRegistered(
             verificationCode,
@@ -67,7 +92,8 @@ contract DocumentRegistry {
             uint256 registeredAt
         )
     {
-        Document memory document = documents[verificationCode];
+        Document memory document =
+            documents[verificationCode];
 
         if (!document.exists) {
             return (false, "", 0);
@@ -96,7 +122,8 @@ contract DocumentRegistry {
             bool
         )
     {
-        Document memory document = documents[verificationCode];
+        Document memory document =
+            documents[verificationCode];
 
         return (
             document.verificationCode,
@@ -105,5 +132,15 @@ contract DocumentRegistry {
             document.registeredAt,
             document.exists
         );
+    }
+
+    function isHashRegistered(
+        bytes32 documentHash
+    )
+        external
+        view
+        returns (bool)
+    {
+        return registeredHashes[documentHash];
     }
 }
